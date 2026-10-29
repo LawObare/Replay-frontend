@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+/* Custom design token utilities from Figma */
+.font-inter {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.bg-footer-gradient {
+  background: linear-gradient(180deg, rgba(0, 82, 66, 0.04) 0%, rgba(0, 184, 148, 0.06) 20%);
+}
