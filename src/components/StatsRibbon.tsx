@@ -85,7 +85,7 @@ export const StatsRibbon: React.FC = () => {
                 key={idx}
                 delayMs={idx * 150}
                 direction="up"
-                className="flex flex-col items-center lg:items-start text-center lg:text-left justify-center group"
+                className="flex flex-col items-center text-center justify-center group"
               >
                 {/* Metric Number (Figma: 64px, Bold 700, #00B894) */}
                 <div className="font-['Inter'] font-bold text-4xl sm:text-5xl lg:text-[64px] text-[#00B894] tracking-tight leading-none mb-2 sm:mb-3 transition-transform duration-300 group-hover:scale-105">
@@ -98,7 +98,7 @@ export const StatsRibbon: React.FC = () => {
                 </div>
 
                 {/* Caption (Figma: 16px, Light 300, #000000) */}
-                <div className="font-['Inter'] font-light text-xs sm:text-sm lg:text-[16px] text-black/80 max-w-[280px]">
+                <div className="font-['Inter'] font-light text-xs sm:text-sm lg:text-[16px] text-black/80 max-w-[280px] mx-auto">
                   {metric.caption}
                 </div>
               </AnimatedSection>
