@@ -4,16 +4,54 @@ import { detectUserPlatform, PLATFORMS, ALL_PACKAGES, type PlatformOS } from '..
 interface DownloadButtonProps {
   className?: string;
   showOtherPlatformsLink?: boolean;
+  dropdownDirection?: 'up' | 'down';
+  variant?: 'dark' | 'emerald' | 'white';
+  subTextColor?: 'dark' | 'light';
 }
 
 export const DownloadButton: React.FC<DownloadButtonProps> = ({
   className = '',
   showOtherPlatformsLink = true,
+  dropdownDirection = 'down',
+  variant = 'dark',
+  subTextColor = 'dark',
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const detectedOs = detectUserPlatform();
   const currentPlatform = PLATFORMS[detectedOs];
+
+  const isEmerald = variant === 'emerald';
+  const isWhite = variant === 'white';
+
+  const buttonBgClasses = isEmerald
+    ? 'bg-[#00B894] text-black hover:bg-[#00B894]/90'
+    : isWhite
+    ? 'bg-white text-black hover:bg-white/95'
+    : 'bg-black text-white hover:bg-black/90';
+
+  const directLinkClasses = isEmerald
+    ? 'text-black hover:text-black/80 focus-visible:ring-black'
+    : isWhite
+    ? 'text-black hover:text-[#00B894] focus-visible:ring-[#00B894]'
+    : 'text-white hover:text-[#00B894] focus-visible:ring-[#00B894]';
+
+  const toggleDividerClasses = isEmerald
+    ? 'border-l border-black/20 hover:bg-black/10 active:bg-black/20 focus-visible:ring-black'
+    : isWhite
+    ? 'border-l border-black/10 hover:bg-black/5 active:bg-black/10 focus-visible:ring-[#00B894]'
+    : 'border-l border-white/20 hover:bg-white/10 active:bg-white/20 focus-visible:ring-[#00B894]';
+
+  const chevronColorClasses = isEmerald || isWhite ? 'text-black' : 'text-white';
+
+  const dropdownPositionClasses =
+    dropdownDirection === 'up'
+      ? 'bottom-full mb-3 slide-in-from-bottom-2'
+      : 'top-full mt-3 slide-in-from-top-2';
+
+  const subTextClasses = subTextColor === 'light' ? 'text-white/70' : 'text-black/60';
+  const subTextBoldClasses = subTextColor === 'light' ? 'text-white' : 'text-black';
+  const subTextLinkClasses = subTextColor === 'light' ? 'text-white hover:text-[#00B894]' : 'text-black hover:text-[#00B894]';
 
   // Close dropdown on outside click or Escape key
   useEffect(() => {
@@ -81,13 +119,13 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 
       {/* Main Download Button & Dropdown Chevron */}
       <div
-        className={`group relative z-50 inline-flex items-center justify-between w-full sm:w-[374px] h-[64px] sm:h-[80px] bg-black text-white rounded-full transition-transform active:scale-[0.99] hover:bg-black/90 shadow-lg hover:shadow-xl ${className}`}
+        className={`group relative z-50 inline-flex items-center justify-between w-full sm:w-[374px] h-[64px] sm:h-[80px] rounded-full transition-transform active:scale-[0.99] shadow-lg hover:shadow-xl ${buttonBgClasses} ${className}`}
       >
         {/* Direct Download for detected platform */}
         <a
           href={currentPlatform.downloadUrl}
           download={detectedOs === 'linux' ? currentPlatform.installerName : undefined}
-          className="flex-1 h-full inline-flex items-center justify-center pl-6 sm:pl-8 pr-2 font-['Inter'] font-bold text-[18px] sm:text-[24px] tracking-tight text-white hover:text-[#00B894] transition-colors rounded-l-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894]"
+          className={`flex-1 h-full inline-flex items-center justify-center pl-6 sm:pl-8 pr-2 font-['Inter'] font-bold text-[18px] sm:text-[24px] tracking-tight transition-colors rounded-l-full cursor-pointer focus:outline-none focus-visible:ring-2 ${directLinkClasses}`}
           title={`Download ${currentPlatform.installerName} (${currentPlatform.size})`}
         >
           Download for Desktop
@@ -100,11 +138,17 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
           aria-haspopup="menu"
           aria-expanded={isDropdownOpen}
           aria-label="Toggle platform download options"
-          className="h-full px-4 sm:px-6 inline-flex items-center justify-center border-l border-white/20 hover:bg-white/10 active:bg-white/20 transition-colors rounded-r-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894]"
+          className={`h-full px-4 sm:px-6 inline-flex items-center justify-center transition-colors rounded-r-full cursor-pointer focus:outline-none focus-visible:ring-2 ${toggleDividerClasses}`}
         >
           <svg
-            className={`w-[18px] h-[16px] text-white transition-transform duration-200 ${
-              isDropdownOpen ? 'rotate-180' : 'group-hover:translate-y-0.5'
+            className={`w-[18px] h-[16px] ${chevronColorClasses} transition-transform duration-200 ${
+              isDropdownOpen
+                ? dropdownDirection === 'up'
+                  ? ''
+                  : 'rotate-180'
+                : dropdownDirection === 'up'
+                ? 'rotate-180 group-hover:-translate-y-0.5'
+                : 'group-hover:translate-y-0.5'
             }`}
             viewBox="0 0 18 16"
             fill="none"
@@ -123,7 +167,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
         <div
           role="menu"
           data-testid="platform-dropdown"
-          className="absolute top-full mt-3 w-full sm:w-[420px] left-0 sm:left-1/2 sm:-translate-x-1/2 bg-white rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] border border-black/10 p-3 z-50 text-left animate-in fade-in slide-in-from-top-2 duration-150"
+          className={`absolute ${dropdownPositionClasses} w-full sm:w-[420px] left-0 sm:left-1/2 sm:-translate-x-1/2 bg-white rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] border border-black/10 p-3 z-50 text-left animate-in fade-in duration-150`}
         >
           <div className="px-3 py-2 border-b border-black/5 flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-black/50">
@@ -204,16 +248,16 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 
       {/* Sub-text: Default format and All Platforms toggle */}
       {showOtherPlatformsLink && (
-        <div className="mt-2.5 flex flex-wrap justify-center text-center items-center gap-1.5 sm:gap-2 text-xs font-light text-black/60 px-2 w-full max-w-[374px]">
+        <div className={`mt-2.5 flex flex-wrap justify-center text-center items-center gap-1.5 sm:gap-2 text-xs font-light px-2 w-full max-w-[374px] ${subTextClasses}`}>
           <span>
-            Default: <strong className="font-medium text-black">{currentPlatform.format}</strong> ({currentPlatform.size})
+            Default: <strong className={`font-medium ${subTextBoldClasses}`}>{currentPlatform.format}</strong> ({currentPlatform.size})
           </span>
           <span className="hidden sm:inline">·</span>
           <button
             type="button"
             onClick={() => setIsDropdownOpen((prev) => !prev)}
             aria-expanded={isDropdownOpen}
-            className="text-black underline underline-offset-2 hover:text-[#00B894] transition-colors cursor-pointer"
+            className={`underline underline-offset-2 transition-colors cursor-pointer ${subTextLinkClasses}`}
           >
             All platforms (.AppImage, .dmg, .exe)
           </button>
