@@ -25,37 +25,31 @@ export const FooterCta: React.FC = () => {
 
   return (
     <footer className="w-full pt-16 sm:pt-24 pb-12 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto overflow-hidden">
-      {/* High-Impact Studio CTA Banner */}
+      {/* Harmonious Light Studio CTA Banner */}
       <AnimatedSection delayMs={100} direction="up">
-        <div className="relative max-w-[1508px] mx-auto rounded-3xl bg-[#0A0D14] border border-white/10 p-8 sm:p-14 lg:p-20 text-center flex flex-col items-center shadow-2xl overflow-hidden">
-          {/* Ambient Emerald Glow Background */}
+        <div className="relative max-w-[1508px] mx-auto rounded-3xl bg-gradient-to-b from-white via-white to-[#F0FAF7]/70 border-2 border-[#00B894]/30 p-8 sm:p-14 lg:p-20 text-center flex flex-col items-center shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          {/* Subtle Ambient Emerald Glow */}
           <div
             aria-hidden="true"
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[320px] bg-[#00B894]/15 blur-[120px] pointer-events-none rounded-full"
-          />
-
-          {/* High-tech Subtle Grid Overlay */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[260px] bg-[#00B894]/10 blur-[100px] pointer-events-none rounded-full"
           />
 
           {/* Top Eyebrow Badge */}
-          <div className="relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#00B894]/10 border border-[#00B894]/30 text-[#00B894] font-mono text-xs sm:text-sm font-semibold mb-6 sm:mb-8">
+          <div className="relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#00B894]/15 border border-[#00B894]/30 text-[#00B894] font-mono text-xs sm:text-sm font-semibold mb-6 sm:mb-8">
             <span className="w-2 h-2 rounded-full bg-[#00B894] animate-pulse" />
             <span>READY TO DEBUG · ZERO CLOUD TELEMETRY</span>
           </div>
 
           {/* Headline */}
-          <h2 className="relative font-['Inter'] font-extrabold text-3xl sm:text-5xl lg:text-[56px] text-white tracking-tight leading-[1.1] max-w-4xl mb-4 sm:mb-6">
+          <h2 className="relative font-['Inter'] font-black text-3xl sm:text-5xl lg:text-[56px] text-black tracking-tight leading-[1.1] max-w-4xl mb-4 sm:mb-6">
             Make truth cheap and{' '}
-            <span className="text-[#00B894] italic font-black">
+            <span className="text-[#00B894] italic font-extrabold">
               guesses expensive
             </span>
           </h2>
 
           {/* Subtitle */}
-          <p className="relative font-['Inter'] font-light text-base sm:text-lg lg:text-[20px] text-white/80 max-w-2xl mb-8 sm:mb-12 leading-relaxed">
+          <p className="relative font-['Inter'] font-light text-base sm:text-lg lg:text-[20px] text-black/80 max-w-2xl mb-8 sm:mb-12 leading-relaxed">
             Capture reality, let evidence-linked AI explain the failure, and prove
             the fix deterministically — all local-first, all on your machine.
           </p>
@@ -65,9 +59,9 @@ export const FooterCta: React.FC = () => {
             {/* Functional Download Button with Upward Dropdown */}
             <DownloadButton
               className="w-full sm:w-[374px]"
-              variant="emerald"
+              variant="dark"
               dropdownDirection="up"
-              subTextColor="light"
+              subTextColor="dark"
             />
 
             {/* Star on GitHub Action */}
@@ -75,10 +69,10 @@ export const FooterCta: React.FC = () => {
               href="https://github.com/Flying-Tea-Squad/ReplayLabb"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-3 w-full sm:w-[340px] h-[64px] sm:h-[80px] bg-white/5 hover:bg-white/10 text-white rounded-full border border-white/20 hover:border-white/40 transition-all duration-200 shadow-lg cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              className="group inline-flex items-center justify-center gap-3 w-full sm:w-[340px] h-[64px] sm:h-[80px] bg-white hover:bg-black/[0.03] text-black rounded-full border border-[rgba(84,110,122,0.8)] hover:border-black/50 transition-all duration-200 shadow-sm cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
               <svg
-                className="w-6 h-6 text-white group-hover:scale-110 transition-transform"
+                className="w-6 h-6 text-black group-hover:scale-110 transition-transform"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 aria-hidden="true"
@@ -92,23 +86,23 @@ export const FooterCta: React.FC = () => {
               <span className="font-['Inter'] font-bold text-[18px] sm:text-[22px]">
                 Star on GitHub
               </span>
-              <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-white/10 text-white/90 group-hover:bg-[#E6B400]/20 group-hover:text-[#E6B400] transition-colors">
+              <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-black/5 text-black/80 group-hover:bg-[#E6B400]/20 group-hover:text-[#B28700] transition-colors">
                 ★ Open Source
               </span>
             </a>
           </div>
 
           {/* Quick CLI Install Pill */}
-          <div className="relative mt-8 sm:mt-10 inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-black/80 border border-white/15 font-mono text-xs sm:text-sm text-white/80 max-w-full overflow-x-auto shadow-inner">
+          <div className="relative mt-8 sm:mt-10 inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white border border-[#D9D9D9] font-mono text-xs sm:text-sm text-black/80 max-w-full overflow-x-auto shadow-sm">
             <span className="text-[#00B894] font-bold select-none">$</span>
-            <span className="text-white/90 font-mono truncate select-all">
+            <span className="text-black/90 font-mono truncate select-all">
               {installCommand}
             </span>
             <button
               type="button"
               onClick={handleCopyCommand}
               aria-label="Copy install command to clipboard"
-              className="ml-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 active:bg-white/30 text-white text-xs font-sans font-medium transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer"
+              className="ml-2 px-3 py-1.5 rounded-lg bg-black/5 hover:bg-black/10 active:bg-black/15 text-black text-xs font-sans font-medium transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer"
             >
               {copied ? (
                 <>
@@ -128,7 +122,7 @@ export const FooterCta: React.FC = () => {
               ) : (
                 <>
                   <svg
-                    className="w-3.5 h-3.5 text-white/70"
+                    className="w-3.5 h-3.5 text-black/60"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -146,7 +140,7 @@ export const FooterCta: React.FC = () => {
           </div>
 
           {/* Trust Assurances Row */}
-          <div className="relative mt-10 pt-8 border-t border-white/10 w-full grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-['Inter'] text-white/60">
+          <div className="relative mt-10 pt-8 border-t border-black/10 w-full grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs sm:text-sm font-['Inter'] text-black/70">
             <div className="flex items-center justify-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00B894]" />
               <span>100% Local Loopback</span>
