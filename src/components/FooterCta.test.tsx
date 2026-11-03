@@ -5,40 +5,35 @@ import { FooterCta } from './FooterCta';
 
 describe('FooterCta Component', () => {
   beforeEach(() => {
-    // Mock window.scrollTo
     vi.stubGlobal('scrollTo', vi.fn());
   });
 
-  it('does not render the removed CTA card', () => {
+  it('renders brand mark, copyright, and simplified navigation links', () => {
     render(<FooterCta />);
 
-    expect(
-      screen.queryByRole('heading', { level: 2, name: /Make truth cheap and guesses expensive/i })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(/READY TO DEBUG · ZERO CLOUD TELEMETRY/i)
-    ).not.toBeInTheDocument();
+    // Brand and copyright
+    expect(screen.getByRole('link', { name: /Replay/i })).toBeInTheDocument();
+    expect(screen.getByText(/Local-first API debugging/i)).toBeInTheDocument();
+
+    // Streamlined links
+    expect(screen.getByRole('link', { name: 'Problem' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Workflow' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Features' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'AI Trust' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Releases' })).toBeInTheDocument();
+
+    // No overly complex column headings
+    expect(screen.queryByRole('heading', { level: 4, name: 'Architecture' })).not.toBeInTheDocument();
   });
 
-  it('renders multi-column developer footer and handles back to top', () => {
+  it('scrolls to top when clicking the Top button', () => {
     render(<FooterCta />);
 
-    // Brand and mission
-    expect(screen.getByText(/Local-first API traffic capture, sanitization/i)).toBeInTheDocument();
+    const topBtn = screen.getByRole('button', { name: /Top/i });
+    expect(topBtn).toBeInTheDocument();
 
-    // Navigation columns
-    expect(screen.getByRole('heading', { level: 4, name: 'Product' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 4, name: 'Architecture' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 4, name: 'Open Source' })).toBeInTheDocument();
-
-    // System status
-    expect(screen.getByText(/v0.1.0 Stable · All Systems Operational/i)).toBeInTheDocument();
-
-    // Back to top
-    const backToTopBtn = screen.getByRole('button', { name: /Back to top/i });
-    expect(backToTopBtn).toBeInTheDocument();
-
-    fireEvent.click(backToTopBtn);
+    fireEvent.click(topBtn);
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
   });
 });
