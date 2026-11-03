@@ -18,20 +18,10 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-8 sm:pt-12 pb-16 sm:pb-20 px-4 sm:px-8 lg:px-16 overflow-hidden">
+    <section className="relative pt-10 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-8 lg:px-16 overflow-hidden">
       <div className="max-w-[1920px] mx-auto flex flex-col items-center text-center">
-        {/* Top Badge (Figma #1:12: 594x48px, rounded-full, border #00B894, bg rgba(0, 184, 148, 0.2)) */}
-        <AnimatedSection delayMs={100}>
-          <div className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-2.5 rounded-full border border-[#00B894] bg-[#00B894]/20 mb-6 sm:mb-12 shadow-sm hover:scale-105 transition-transform duration-200 cursor-default max-w-full">
-            <span className="w-2 h-2 rounded-full bg-[#00B894] mr-2 sm:mr-2.5 animate-pulse shrink-0" />
-            <span className="font-['Inter'] font-semibold text-xs sm:text-base md:text-[20px] text-black tracking-tight truncate sm:whitespace-normal">
-              Local-first API debugging · Windows · MacOS · Linux
-            </span>
-          </div>
-        </AnimatedSection>
-
         {/* Display Headline (Figma #1:18: 96px, Black 900) */}
-        <AnimatedSection delayMs={200}>
+        <AnimatedSection delayMs={100}>
           <h1 className="max-w-6xl font-['Inter'] font-black text-3xl sm:text-6xl md:text-7xl lg:text-[96px] tracking-tight leading-[1.08] sm:leading-[1.05] text-black">
             Capture the Failure.{' '}
             <span className="text-[#00B894] italic font-extrabold block sm:inline">
@@ -41,7 +31,7 @@ export const Hero: React.FC = () => {
         </AnimatedSection>
 
         {/* Subtitle (Figma #1:19: 24px, Light 300) */}
-        <AnimatedSection delayMs={300}>
+        <AnimatedSection delayMs={200}>
           <p className="mt-6 sm:mt-8 max-w-4xl font-['Inter'] font-light text-base sm:text-xl md:text-[24px] text-black/90 leading-relaxed px-2">
             A local-first desktop app to capture, sanitize and replay HTTP(s) traffic
             with evidence-linked AI that shows its work and deterministic replay that
@@ -50,7 +40,7 @@ export const Hero: React.FC = () => {
         </AnimatedSection>
 
         {/* Dual CTAs (Figma #1:20 & #1:24) */}
-        <AnimatedSection delayMs={400} className="w-full relative z-30">
+        <AnimatedSection delayMs={300} className="w-full relative z-30">
           <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row items-center sm:items-start justify-center gap-4 sm:gap-6 w-full max-w-md sm:max-w-none mx-auto relative z-30">
             <DownloadButton className="w-full sm:w-[374px]" />
 
@@ -65,7 +55,7 @@ export const Hero: React.FC = () => {
         </AnimatedSection>
 
         {/* Trust Checklist (Figma #1:27 - #1:33) */}
-        <AnimatedSection delayMs={500} className="relative z-10">
+        <AnimatedSection delayMs={400} className="relative z-10">
           <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-12 text-xs sm:text-base lg:text-[18px] font-['Inter'] font-light text-black">
             {/* Item 1 */}
             <div className="flex items-center gap-2 group cursor-default">
@@ -127,7 +117,7 @@ export const Hero: React.FC = () => {
         </AnimatedSection>
 
         {/* Hero App Showcase Frame (Figma #1:34: 1184x638px) with Interactive 3D Perspective */}
-        <AnimatedSection delayMs={600} className="w-full max-w-[1184px] relative z-0">
+        <AnimatedSection delayMs={500} className="w-full max-w-[1184px] relative z-0">
           <div className="mt-10 sm:mt-20 relative group">
             {/* Interactive Inspector Hotspot Badges */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-4">
