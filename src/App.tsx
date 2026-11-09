@@ -69,7 +69,10 @@ export const App: React.FC = () => {
     <div className="min-h-screen bg-white text-black font-['Inter',sans-serif] selection:bg-[#00B894]/20 selection:text-black">
       <Navbar currentView={currentView} onNavigate={navigateTo} />
       {currentView === 'download' ? (
-        <DownloadPage onNavigate={navigateTo} />
+        <>
+          <DownloadPage onNavigate={navigateTo} />
+          <FooterCta />
+        </>
       ) : (
         <>
           <main>
