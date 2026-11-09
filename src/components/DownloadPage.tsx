@@ -60,7 +60,7 @@ const EXTENSIONS: ExtensionInfo[] = [
   },
 ];
 
-export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
+export const DownloadPage: React.FC<DownloadPageProps> = () => {
   const detected = detectUserPlatform();
   const initialOS: SelectedOS = (detected === 'linux' || detected === 'windows' || detected === 'macos')
     ? detected
@@ -131,8 +131,8 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="w-full min-h-screen bg-white text-[#121317] font-['Inter',sans-serif]">
-      {/* Main Container matching Figma 1920 layout */}
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-16 pt-8 sm:pt-12 lg:pt-16 pb-12 sm:pb-20">
+      {/* Main Container */}
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-16 pt-8 sm:pt-12 lg:pt-16 pb-16 sm:pb-24">
         
         {/* Header Title & Previous Releases Link */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-9">
@@ -241,6 +241,15 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
 
         {/* Extensions Grid Section */}
         <div className="mt-16 pt-12 border-t border-[#212226]/12">
+          <div className="mb-8">
+            <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-medium leading-[34px] tracking-[-0.0047em] text-[#121317]">
+              IDE &amp; Editor Extensions
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-[#45474D]">
+              Capture and debug HTTP(s) requests directly within your development environment.
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
             {EXTENSIONS.map((item) => (
               <div key={item.name} className="flex flex-col items-start space-y-3">
@@ -277,162 +286,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               </div>
             ))}
           </div>
-
-          {/* Standalone IDE Section */}
-          <div className="mt-14 pt-10 border-t border-[#212226]/12 space-y-4">
-            <div className="flex items-center gap-3">
-              <h3 className="text-lg sm:text-[18.4px] font-medium text-[#121317]">
-                Antigravity IDE (Standalone)
-              </h3>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-[#E8F0FE] border border-[#D2E3FC] text-[#174EA6] text-xs font-mono font-bold">
-                v2.6.0
-              </span>
-            </div>
-
-            <p className="text-sm sm:text-[14.4px] leading-relaxed text-[#45474D] max-w-2xl">
-              Dedicated desktop application with native windowing, integrated agent panels, and full execution workspace.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <a
-                href={x64Config.href}
-                className="inline-flex items-center justify-center px-6 py-2.5 h-[47px] bg-[#121317] text-white text-sm sm:text-[17.5px] font-medium rounded-full hover:bg-[#121317]/90 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 shadow-sm"
-              >
-                Download for x64
-              </a>
-              <a
-                href={arm64Config.href}
-                className="inline-flex items-center justify-center px-6 py-2.5 h-[47px] bg-[#B7BFD9]/10 hover:bg-[#B7BFD9]/20 border border-[#212226]/[0.06] text-[#121317] text-sm sm:text-[17.5px] font-medium rounded-full transition-all duration-200 shadow-sm"
-              >
-                Download for ARM64
-              </a>
-            </div>
-          </div>
-
-          {/* Python SDK Section */}
-          <div className="mt-14 pt-12 border-t border-[#212226]/12 space-y-4">
-            <div className="flex items-center gap-3">
-              <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-medium text-[#121317]">
-                Antigravity SDK
-              </h2>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-[#E8F0FE] border border-[#D2E3FC] text-[#174EA6] text-xs font-mono font-bold">
-                v0.1.23
-              </span>
-            </div>
-
-            <p className="text-base sm:text-[17.5px] leading-relaxed text-[#45474D] max-w-3xl">
-              Construct, configure, and orchestrate custom autonomous agents with the official Python SDK. Co-optimized with the Gemini family of models.
-            </p>
-
-            <div className="pt-2">
-              <a
-                href="https://pypi.org/project/antigravity-sdk/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-2.5 h-[47px] bg-[#B7BFD9]/10 hover:bg-[#B7BFD9]/20 border border-[#212226]/[0.06] text-[#121317] text-sm sm:text-[17.5px] font-medium rounded-full transition-all duration-200 shadow-sm"
-              >
-                Download Python SDK
-              </a>
-            </div>
-          </div>
         </div>
-
-        {/* Footer Area Matching Figma #397:311 */}
-        <footer className="mt-20 pt-12 border-t border-[#212226]/[0.06]">
-          {/* Top 3-Column Area */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12">
-            <div className="md:col-span-5">
-              <p className="text-2xl sm:text-3xl lg:text-[32px] font-medium text-[#121317]">
-                Experience liftoff
-              </p>
-            </div>
-
-            {/* Product Column */}
-            <div className="md:col-span-3 sm:col-span-6 space-y-3">
-              <h4 className="text-[14.5px] font-medium text-[#45474D]">Product</h4>
-              <ul className="space-y-2 text-[14.5px] text-[#121317]">
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => onNavigate?.('home')}
-                    className="hover:text-[#00B894] transition-colors cursor-pointer text-left"
-                  >
-                    Product
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="hover:text-[#00B894] transition-colors cursor-pointer text-left"
-                  >
-                    Download
-                  </button>
-                </li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Antigravity App</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Antigravity Extensions</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Antigravity CLI</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Antigravity IDE</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Antigravity SDK</span></li>
-              </ul>
-            </div>
-
-            {/* Resources Column */}
-            <div className="md:col-span-4 sm:col-span-6 space-y-3">
-              <h4 className="text-[14.5px] font-medium text-[#45474D]">Resources</h4>
-              <ul className="space-y-2 text-[14.5px] text-[#121317]">
-                <li><a href="https://docs.replaylabb.com" className="hover:text-[#00B894] transition-colors">Docs</a></li>
-                <li><a href="https://github.com/Flying-Tea-Squad/ReplayLabb/releases" className="hover:text-[#00B894] transition-colors">Changelog</a></li>
-                <li><a href="https://github.com/Flying-Tea-Squad/ReplayLabb/releases" className="hover:text-[#00B894] transition-colors">Releases</a></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Blog</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Newsletter</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Pricing</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Use Cases</span></li>
-                <li><span className="hover:text-[#00B894] cursor-pointer">Press</span></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Hero Antigravity Typography Graphic */}
-          <div className="py-6 flex justify-center items-center overflow-hidden">
-            <img
-              src="/icons/footer-graphic.svg"
-              alt="Antigravity"
-              className="w-full max-w-[1600px] h-auto object-contain select-none"
-            />
-          </div>
-
-          {/* Bottom Bar: Google Logo & Legal Links */}
-          <div className="pt-8 pb-4 border-t border-[#212226]/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-[14.5px] text-[#45474D]">
-            <div className="flex items-center gap-2">
-              <img
-                src="/icons/icon-google.svg"
-                alt="Google"
-                width={75}
-                height={24}
-                className="h-6 w-auto"
-              />
-            </div>
-
-            <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              <a href="https://about.google/" target="_blank" rel="noopener noreferrer" className="hover:text-[#121317] transition-colors">
-                About Google
-              </a>
-              <a href="https://about.google/products/" target="_blank" rel="noopener noreferrer" className="hover:text-[#121317] transition-colors">
-                Google Products
-              </a>
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-[#121317] transition-colors">
-                Privacy
-              </a>
-              <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="hover:text-[#121317] transition-colors">
-                Terms
-              </a>
-              <button type="button" className="hover:text-[#121317] transition-colors cursor-pointer">
-                Manage cookies
-              </button>
-            </nav>
-          </div>
-        </footer>
 
       </div>
     </div>
