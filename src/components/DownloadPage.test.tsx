@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { DownloadPage } from './DownloadPage';
 
@@ -68,29 +68,8 @@ describe('DownloadPage Component', () => {
     expect(viewDocsButtons).toHaveLength(6);
   });
 
-  it('renders Standalone IDE and Python SDK sections', () => {
-    render(<DownloadPage />);
-
-    expect(screen.getByText('Antigravity IDE (Standalone)')).toBeInTheDocument();
-    expect(screen.getByText('v2.6.0')).toBeInTheDocument();
-    expect(screen.getByText('Download for x64')).toBeInTheDocument();
-    expect(screen.getByText('Download for ARM64')).toBeInTheDocument();
-
-    expect(screen.getByRole('heading', { name: /Antigravity SDK/i })).toBeInTheDocument();
-    expect(screen.getByText('v0.1.23')).toBeInTheDocument();
-    expect(screen.getByText('Download Python SDK')).toBeInTheDocument();
-  });
-
-  it('renders footer with Experience liftoff, products, and Google mark', () => {
-    const handleNavigate = vi.fn();
-    render(<DownloadPage onNavigate={handleNavigate} />);
-
-    expect(screen.getByText('Experience liftoff')).toBeInTheDocument();
-    expect(screen.getAllByText('Product').length).toBeGreaterThan(0);
-    expect(screen.getByText('Resources')).toBeInTheDocument();
-    expect(screen.getByAltText('Google')).toBeInTheDocument();
-    expect(screen.getByText('About Google')).toBeInTheDocument();
-    expect(screen.getByText('Privacy')).toBeInTheDocument();
-    expect(screen.getByText('Terms')).toBeInTheDocument();
+  it('does not contain any Antigravity references', () => {
+    const { container } = render(<DownloadPage />);
+    expect(container.textContent?.toLowerCase()).not.toContain('antigravity');
   });
 });
