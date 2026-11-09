@@ -21,7 +21,7 @@ describe('App Integration', () => {
     expect(screen.getByRole('tab', { name: /Linux/i })).toBeInTheDocument();
 
     // Click brand mark in navbar to return to home
-    const brandMark = screen.getByText('Replay').closest('a')!;
+    const brandMark = screen.getByTestId('app-logo-mark').closest('a')!;
     fireEvent.click(brandMark);
 
     // Verify home page is back
