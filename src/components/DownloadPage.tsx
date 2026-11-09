@@ -1,64 +1,11 @@
 import React, { useState } from 'react';
 import { detectUserPlatform, PLATFORMS } from '../lib/osDetector';
 
-type SelectedOS = 'macos' | 'windows' | 'linux' | 'googlebook';
+type SelectedOS = 'macos' | 'windows' | 'linux';
 
 interface DownloadPageProps {
   onNavigate?: (view: 'home' | 'download', sectionId?: string) => void;
 }
-
-interface ExtensionInfo {
-  name: string;
-  version: string;
-  icon: string;
-  description: string;
-  docUrl: string;
-}
-
-const EXTENSIONS: ExtensionInfo[] = [
-  {
-    name: 'Visual Studio Code',
-    version: 'v1.10.0',
-    icon: '/icons/icon-vscode.svg',
-    description: 'Autonomous coding agent, inline completions, and full diff reviews in VS Code and VS Code Insiders.',
-    docUrl: 'https://docs.replaylabb.com/extensions/vscode',
-  },
-  {
-    name: 'Visual Studio',
-    version: 'v1.0.261026.0',
-    icon: '/icons/icon-visualstudio.svg',
-    description: 'Agentic workflows, tool executions, and multi-file code editing for Visual Studio 2026.',
-    docUrl: 'https://docs.replaylabb.com/extensions/visual-studio',
-  },
-  {
-    name: 'JetBrains',
-    version: 'v1.4.1',
-    icon: '/icons/icon-jetbrains.svg',
-    description: 'IntelliJ IDEA, PyCharm, WebStorm, GoLand, CLion, Rider, and more (Enterprise support in Preview).',
-    docUrl: 'https://docs.replaylabb.com/extensions/jetbrains',
-  },
-  {
-    name: 'Zed',
-    version: 'v1.4.1',
-    icon: '/icons/icon-zed.svg',
-    description: 'High-performance agent orchestration and native multibuffer editing in Zed (Enterprise support in Preview).',
-    docUrl: 'https://docs.replaylabb.com/extensions/zed',
-  },
-  {
-    name: 'Xcode',
-    version: 'v1.4.1',
-    icon: '/icons/icon-xcode.svg',
-    description: 'Native agentic development inside Xcode for macOS, iOS, iPadOS, watchOS, and visionOS (Enterprise support in Preview).',
-    docUrl: 'https://docs.replaylabb.com/extensions/xcode',
-  },
-  {
-    name: 'Eclipse',
-    version: 'v1.0.0',
-    icon: '/icons/icon-eclipse.svg',
-    description: 'Agentic workflows, multi-step task execution, and diff reviews in Eclipse on macOS, Linux, and Windows (Public Preview).',
-    docUrl: 'https://docs.replaylabb.com/extensions/eclipse',
-  },
-];
 
 export const DownloadPage: React.FC<DownloadPageProps> = () => {
   const detected = detectUserPlatform();
@@ -72,7 +19,6 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
     { id: 'macos', label: 'macOS', icon: '/icons/icon-macos.svg', width: 16, height: 20 },
     { id: 'windows', label: 'Windows', icon: '/icons/icon-windows.svg', width: 20, height: 20 },
     { id: 'linux', label: 'Linux', icon: '/icons/icon-linux.svg', width: 20, height: 20 },
-    { id: 'googlebook', label: 'Googlebook', icon: '/icons/icon-googlebook.svg', width: 20, height: 20 },
   ];
 
   const getRequirementsText = () => {
@@ -81,8 +27,6 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
         return 'macOS 12.0 (Monterey) or later (Apple Silicon M1/M2/M3/M4 & Intel 64-bit)';
       case 'windows':
         return 'Windows 10 64-bit (build 19041+) or Windows 11 (x64 / ARM64)';
-      case 'googlebook':
-        return 'ChromeOS with Linux development environment (Debian/Crostini container enabled)';
       case 'linux':
       default:
         return 'glibc >= 2.28, glibcxx >= 3.4.25 (e.g. Ubuntu 20+, Debian 10+, Fedora 36+, RHEL 8+)';
@@ -96,12 +40,16 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
           href: PLATFORMS.linux.downloadUrl,
           fileName: PLATFORMS.linux.installerName,
           label: 'Download (.deb)',
+          format: '.deb (x86_64)',
+          size: PLATFORMS.linux.size,
         };
       }
       return {
         href: 'https://github.com/Flying-Tea-Squad/ReplayLabb/releases/latest',
         fileName: 'replaylabb_0.1.0_arm64.deb',
-        label: 'Download (ARM64)',
+        label: 'Download (ARM64 .deb)',
+        format: '.deb (arm64)',
+        size: '11 MB',
       };
     }
     if (activeOS === 'macos') {
@@ -109,20 +57,17 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
         href: PLATFORMS.macos.downloadUrl,
         fileName: PLATFORMS.macos.installerName,
         label: arch === 'arm64' ? 'Download for Apple Silicon' : 'Download for Intel',
+        format: '.dmg (universal)',
+        size: PLATFORMS.macos.size,
       };
     }
-    if (activeOS === 'windows') {
-      return {
-        href: PLATFORMS.windows.downloadUrl,
-        fileName: PLATFORMS.windows.installerName,
-        label: arch === 'x64' ? 'Download for x64' : 'Download for ARM64',
-      };
-    }
-    // googlebook / chromeos
+    // windows
     return {
-      href: PLATFORMS.linux.downloadUrl,
-      fileName: PLATFORMS.linux.installerName,
-      label: 'Download (.deb for ChromeOS)',
+      href: PLATFORMS.windows.downloadUrl,
+      fileName: PLATFORMS.windows.installerName,
+      label: arch === 'x64' ? 'Download for x64' : 'Download for ARM64',
+      format: '.exe (x64)',
+      size: PLATFORMS.windows.size,
     };
   };
 
@@ -227,55 +172,6 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Extensions Grid Section */}
-        <div className="mt-16 pt-12 border-t border-[#212226]/12">
-          <div className="mb-8">
-            <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-medium leading-[34px] tracking-[-0.0047em] text-[#121317]">
-              IDE &amp; Editor Extensions
-            </h2>
-            <p className="mt-2 text-sm sm:text-base text-[#45474D]">
-              Capture and debug HTTP(s) requests directly within your development environment.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
-            {EXTENSIONS.map((item) => (
-              <div key={item.name} className="flex flex-col items-start space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src={item.icon}
-                    alt=""
-                    width={22}
-                    height={22}
-                    className="shrink-0"
-                  />
-                  <h3 className="text-lg sm:text-[18.4px] font-medium text-[#121317]">
-                    {item.name}
-                  </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-lg bg-[#E8F0FE] border border-[#D2E3FC] text-[#174EA6] text-xs font-mono font-bold">
-                    {item.version}
-                  </span>
-                </div>
-
-                <p className="text-sm sm:text-[14.4px] leading-relaxed text-[#45474D] max-w-xl">
-                  {item.description}
-                </p>
-
-                <div className="pt-1">
-                  <a
-                    href={item.docUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-6 py-2.5 h-[47px] bg-[#B7BFD9]/10 hover:bg-[#B7BFD9]/20 border border-[#212226]/[0.06] rounded-full text-[#121317] text-sm sm:text-[17.5px] font-medium transition-all duration-200 shadow-sm"
-                  >
-                    View Docs
-                  </a>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
 
