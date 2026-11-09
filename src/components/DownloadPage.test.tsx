@@ -11,21 +11,19 @@ describe('DownloadPage Component', () => {
     expect(screen.queryByRole('link', { name: /View previous releases/i })).not.toBeInTheDocument();
   });
 
-  it('renders all four OS platform tabs and switches active tab on click', () => {
+  it('renders all three ReplayLabb OS platform tabs and switches active tab on click', () => {
     render(<DownloadPage />);
 
     const tabs = screen.getAllByRole('tab');
-    expect(tabs).toHaveLength(4);
+    expect(tabs).toHaveLength(3);
 
     const macTab = screen.getByRole('tab', { name: /macOS/i });
     const winTab = screen.getByRole('tab', { name: /Windows/i });
     const linuxTab = screen.getByRole('tab', { name: /Linux/i });
-    const googlebookTab = screen.getByRole('tab', { name: /Googlebook/i });
 
     expect(macTab).toBeInTheDocument();
     expect(winTab).toBeInTheDocument();
     expect(linuxTab).toBeInTheDocument();
-    expect(googlebookTab).toBeInTheDocument();
 
     // Click Windows tab
     fireEvent.click(winTab);
@@ -50,24 +48,10 @@ describe('DownloadPage Component', () => {
     expect(minReqs.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('renders all IDE & editor extension cards with documentation links', () => {
-    render(<DownloadPage />);
-
-    expect(screen.getByText('Visual Studio Code')).toBeInTheDocument();
-    expect(screen.getByText('v1.10.0')).toBeInTheDocument();
-    expect(screen.getByText('Visual Studio')).toBeInTheDocument();
-    expect(screen.getByText('v1.0.261026.0')).toBeInTheDocument();
-    expect(screen.getByText('JetBrains')).toBeInTheDocument();
-    expect(screen.getByText('Zed')).toBeInTheDocument();
-    expect(screen.getByText('Xcode')).toBeInTheDocument();
-    expect(screen.getByText('Eclipse')).toBeInTheDocument();
-
-    const viewDocsButtons = screen.getAllByText('View Docs');
-    expect(viewDocsButtons).toHaveLength(6);
-  });
-
   it('does not contain any Antigravity references', () => {
     const { container } = render(<DownloadPage />);
     expect(container.textContent?.toLowerCase()).not.toContain('antigravity');
+    expect(container.textContent?.toLowerCase()).not.toContain('autonomous coding agent');
+    expect(container.textContent?.toLowerCase()).not.toContain('googlebook');
   });
 });
