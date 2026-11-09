@@ -134,21 +134,12 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
       {/* Main Container */}
       <div className="max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-16 pt-8 sm:pt-12 lg:pt-16 pb-16 sm:pb-24">
         
-        {/* Header Title & Previous Releases Link */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-9">
+        {/* Header Title */}
+        <div className="pb-9">
           <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-bold leading-tight tracking-[-0.017em]">
             <span>Download</span>{' '}
             <span className="font-extrabold italic text-[#00B894]">ReplayLabb</span>
           </h1>
-
-          <a
-            href="https://github.com/Flying-Tea-Squad/ReplayLabb/releases"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-6 py-2.5 h-[47px] bg-[#B7BFD9]/10 hover:bg-[#B7BFD9]/20 border border-[#212226]/[0.06] backdrop-blur-[6px] rounded-full text-[#121317] text-sm sm:text-[17.5px] font-medium transition-all duration-200 self-start md:self-auto shadow-sm"
-          >
-            View previous releases
-          </a>
         </div>
 
         {/* OS Platform Switcher Bar */}
