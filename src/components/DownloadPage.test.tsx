@@ -4,13 +4,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { DownloadPage } from './DownloadPage';
 
 describe('DownloadPage Component', () => {
-  it('renders title, brand mark, and releases link', () => {
+  it('renders title and brand mark without previous releases button', () => {
     render(<DownloadPage />);
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Download\s+ReplayLabb/i);
-    const releasesLink = screen.getByRole('link', { name: /View previous releases/i });
-    expect(releasesLink).toBeInTheDocument();
-    expect(releasesLink).toHaveAttribute('href', 'https://github.com/Flying-Tea-Squad/ReplayLabb/releases');
+    expect(screen.queryByRole('link', { name: /View previous releases/i })).not.toBeInTheDocument();
   });
 
   it('renders all four OS platform tabs and switches active tab on click', () => {
