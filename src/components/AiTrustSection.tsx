@@ -185,7 +185,7 @@ export const AiTrustSection: React.FC = () => {
                           : 'bg-[rgba(84,110,122,0.1)] border-[rgba(84,110,122,0.6)] text-black hover:bg-[rgba(84,110,122,0.2)]'
                       }`}
                     >
-                      {hypothesisState === 'rejected' ? 'Rejected ✕' : 'Reject'}
+                      {hypothesisState === 'rejected' ? 'Rejected' : 'Reject'}
                     </button>
 
                     <button
@@ -198,7 +198,7 @@ export const AiTrustSection: React.FC = () => {
                       }`}
                     >
                       {hypothesisState === 'confirmed'
-                        ? 'Scenario Drafted ✓'
+                        ? 'Scenario Drafted'
                         : 'confirm & build scenario'}
                     </button>
                   </div>
@@ -207,8 +207,11 @@ export const AiTrustSection: React.FC = () => {
                 {/* Live Interactive Scenario Draft Feedback */}
                 {hypothesisState === 'confirmed' && (
                   <div className="p-4 rounded-xl bg-white border border-[#00B894] shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#00B894] uppercase mb-1">
-                      <span>✓ Scenario Drafted into Replay Engine</span>
+                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#00B894] uppercase mb-1">
+                      <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Scenario Drafted into Replay Engine</span>
                     </div>
                     <div className="font-mono text-xs text-black/80">
                       Rule generated: Match <code>status == 401</code> on <code>/stream</code> → Force invoke <code>/auth/refresh</code> before retrying.
