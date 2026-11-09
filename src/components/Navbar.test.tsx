@@ -48,4 +48,24 @@ describe('Navbar Component', () => {
 
     expect(screen.queryByText(/View All Platforms/i)).not.toBeInTheDocument();
   });
+
+  it('invokes onNavigate with download when Download button is clicked', () => {
+    const handleNavigate = vi.fn();
+    render(<Navbar onNavigate={handleNavigate} />);
+
+    const downloadLink = screen.getByRole('link', { name: /^Download$/i });
+    fireEvent.click(downloadLink);
+
+    expect(handleNavigate).toHaveBeenCalledWith('download');
+  });
+
+  it('invokes onNavigate with home when brand mark is clicked', () => {
+    const handleNavigate = vi.fn();
+    render(<Navbar currentView="download" onNavigate={handleNavigate} />);
+
+    const brandMark = screen.getByText('Replay').closest('a')!;
+    fireEvent.click(brandMark);
+
+    expect(handleNavigate).toHaveBeenCalledWith('home');
+  });
 });
