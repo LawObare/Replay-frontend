@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { PlatformModal } from './PlatformModal';
-import { detectUserPlatform, PLATFORMS } from '../lib/osDetector';
+import { detectUserPlatform } from '../lib/osDetector';
 
-export const Navbar: React.FC = () => {
+export interface NavbarProps {
+  currentView?: 'home' | 'download';
+  onNavigate?: (view: 'home' | 'download', sectionId?: string) => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ currentView = 'home', onNavigate }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
   const detectedOs = detectUserPlatform();
-  const currentPlatform = PLATFORMS[detectedOs];
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+
+      if (currentView !== 'home') return;
 
       const sections = ['problem', 'workflow', 'features', 'ai-trust'];
       const scrollPos = window.scrollY + 200;
@@ -33,7 +39,7 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [currentView]);
 
   // Close mobile menu on resize to desktop
   useEffect(() => {
@@ -51,7 +57,17 @@ export const Navbar: React.FC = () => {
     { href: '#workflow', label: 'Workflow', id: 'workflow' },
     { href: '#features', label: 'Features', id: 'features' },
     { href: '#ai-trust', label: 'AI Trust', id: 'ai-trust' },
+    { href: 'https://docs.replaylabb.com', label: 'Docs', id: 'docs', isExternal: true },
   ];
+
+  const handleDownloadClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate('download');
+    } else {
+      window.location.hash = '#download';
+    }
+  };
 
   return (
     <>
@@ -67,7 +83,13 @@ export const Navbar: React.FC = () => {
           <a
             href="#"
             className="flex items-center gap-2 sm:gap-3 group shrink-0"
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={(e) => {
+              setIsMobileMenuOpen(false);
+              if (onNavigate) {
+                e.preventDefault();
+                onNavigate('home');
+              }
+            }}
           >
             <div
               className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-black flex items-center justify-center text-[#00B894] shadow-sm group-hover:scale-105 transition-transform duration-200"
@@ -100,20 +122,28 @@ export const Navbar: React.FC = () => {
             </span>
           </a>
 
-          {/* Desktop Navigation Links (Figma #1:4 - #1:7) */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-12 text-base lg:text-[20px] font-normal text-black">
             {navLinks.map((link) => (
               <a
                 key={link.id}
                 href={link.href}
+                target={link.isExternal ? '_blank' : undefined}
+                rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                onClick={(e) => {
+                  if (!link.isExternal && currentView === 'download' && onNavigate) {
+                    e.preventDefault();
+                    onNavigate('home', link.id);
+                  }
+                }}
                 className={`transition-all duration-200 hover:text-[#00B894] relative py-1 ${
-                  activeSection === link.id
+                  currentView === 'home' && activeSection === link.id
                     ? 'text-[#00B894] font-medium'
                     : 'text-black'
                 }`}
               >
                 {link.label}
-                {activeSection === link.id && (
+                {currentView === 'home' && activeSection === link.id && (
                   <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00B894] rounded-full animate-in fade-in" />
                 )}
               </a>
@@ -123,15 +153,11 @@ export const Navbar: React.FC = () => {
           {/* Actions: Download Button & Mobile Hamburger */}
           <div className="flex items-center gap-2 sm:gap-4">
             <a
-              href={currentPlatform.downloadUrl}
-              download={detectedOs === 'linux' ? currentPlatform.installerName : undefined}
-              onClick={(e) => {
-                if (detectedOs !== 'linux') {
-                  e.preventDefault();
-                  setIsModalOpen(true);
-                }
-              }}
-              className="inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 lg:w-[201px] lg:h-[78px] bg-black text-white text-xs sm:text-base lg:text-[20px] font-normal rounded-full hover:bg-black/85 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md cursor-pointer shrink-0"
+              href="#download"
+              onClick={handleDownloadClick}
+              className={`inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 lg:w-[201px] lg:h-[78px] bg-black text-white text-xs sm:text-base lg:text-[20px] font-normal rounded-full hover:bg-black/85 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md cursor-pointer shrink-0 ${
+                currentView === 'download' ? 'ring-2 ring-[#00B894] ring-offset-2' : ''
+              }`}
             >
               Download
             </a>
@@ -165,20 +191,42 @@ export const Navbar: React.FC = () => {
                 <a
                   key={link.id}
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  target={link.isExternal ? '_blank' : undefined}
+                  rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                  onClick={(e) => {
+                    setIsMobileMenuOpen(false);
+                    if (!link.isExternal && currentView === 'download' && onNavigate) {
+                      e.preventDefault();
+                      onNavigate('home', link.id);
+                    }
+                  }}
                   className={`py-2 px-3 rounded-lg transition-colors flex items-center justify-between ${
-                    activeSection === link.id
+                    currentView === 'home' && activeSection === link.id
                       ? 'bg-[#00B894]/10 text-[#00B894] font-semibold'
                       : 'hover:bg-black/5 text-black'
                   }`}
                 >
                   <span>{link.label}</span>
-                  {activeSection === link.id && (
+                  {currentView === 'home' && activeSection === link.id && (
                     <span className="w-2 h-2 rounded-full bg-[#00B894]" />
                   )}
                 </a>
               ))}
               <div className="pt-4 border-t border-black/10 flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    if (onNavigate) {
+                      onNavigate('download');
+                    } else {
+                      window.location.hash = '#download';
+                    }
+                  }}
+                  className="w-full py-3 text-center text-sm font-medium bg-black text-white rounded-full hover:bg-black/90 transition-colors cursor-pointer"
+                >
+                  Download Page
+                </button>
                 <button
                   type="button"
                   onClick={() => {
@@ -203,3 +251,4 @@ export const Navbar: React.FC = () => {
     </>
   );
 };
+
