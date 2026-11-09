@@ -30,8 +30,8 @@ describe('useInView', () => {
         intersectionCallback = callback;
       }
 
-      observe = observeMock;
-      unobserve = unobserveMock;
+      observe = observeMock as unknown as (target: Element) => void;
+      unobserve = unobserveMock as unknown as (target: Element) => void;
       disconnect = vi.fn();
       takeRecords = vi.fn().mockReturnValue([]);
     }
@@ -53,7 +53,7 @@ describe('useInView', () => {
 
     act(() => {
       intersectionCallback(
-        [{ isIntersecting: true, target } as IntersectionObserverEntry],
+        [{ isIntersecting: true, target } as unknown as IntersectionObserverEntry],
         { unobserve: unobserveMock } as unknown as IntersectionObserver
       );
     });
@@ -67,7 +67,7 @@ describe('useInView', () => {
 
     act(() => {
       intersectionCallback(
-        [{ isIntersecting: true, target } as IntersectionObserverEntry],
+        [{ isIntersecting: true, target } as unknown as IntersectionObserverEntry],
         { unobserve: unobserveMock } as unknown as IntersectionObserver
       );
     });
@@ -75,7 +75,7 @@ describe('useInView', () => {
 
     act(() => {
       intersectionCallback(
-        [{ isIntersecting: false, target } as IntersectionObserverEntry],
+        [{ isIntersecting: false, target } as unknown as IntersectionObserverEntry],
         { unobserve: unobserveMock } as unknown as IntersectionObserver
       );
     });
@@ -97,7 +97,7 @@ describe('useInView', () => {
 
     act(() => {
       intersectionCallback(
-        [{ isIntersecting: true, target } as IntersectionObserverEntry],
+        [{ isIntersecting: true, target } as unknown as IntersectionObserverEntry],
         { unobserve: unobserveMock } as unknown as IntersectionObserver
       );
     });
