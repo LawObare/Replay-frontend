@@ -48,7 +48,7 @@ describe('AiTrustSection', () => {
     const confirmBtn = screen.getByText(/confirm & build scenario/i);
     fireEvent.click(confirmBtn);
 
-    expect(screen.getByText(/Scenario Drafted ✓/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Scenario Drafted$/i })).toBeInTheDocument();
     expect(screen.getByText(/Scenario Drafted into Replay Engine/i)).toBeInTheDocument();
   });
 });
