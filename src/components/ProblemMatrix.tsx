@@ -43,17 +43,10 @@ export const ProblemMatrix: React.FC = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
-    <section id="problem" className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto border-t border-[#D9D9D9]/40">
-      {/* Eyebrow */}
-      <AnimatedSection delayMs={100}>
-        <div className="font-['Inter'] font-light text-sm sm:text-[16px] text-[#00B894] tracking-wider uppercase mb-2 sm:mb-3">
-          WHY REPLAYLABB
-        </div>
-      </AnimatedSection>
-
+    <section id="problem" className="py-10 sm:py-16 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto border-t border-[#D9D9D9]/40">
       {/* Headline */}
-      <AnimatedSection delayMs={200}>
-        <h2 className="font-['Inter'] font-semibold text-2xl sm:text-4xl lg:text-[48px] text-black tracking-tight mb-8 sm:mb-14 max-w-4xl leading-tight">
+      <AnimatedSection delayMs={100}>
+        <h2 className="font-['Inter'] font-semibold text-2xl sm:text-4xl lg:text-[48px] text-black tracking-tight mb-6 sm:mb-8 max-w-4xl leading-tight">
           Built for the moment a dashboard says{' '}
           <span className="text-[#00B894] inline-block hover:scale-110 transition-transform cursor-default">
             500

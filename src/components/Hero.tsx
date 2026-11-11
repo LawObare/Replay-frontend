@@ -18,7 +18,7 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-10 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-8 lg:px-16 overflow-hidden">
+    <section className="relative pt-8 sm:pt-12 pb-10 sm:pb-14 px-4 sm:px-8 lg:px-16 overflow-hidden">
       <div className="max-w-[1920px] mx-auto flex flex-col items-center text-center">
         {/* Display Headline (Figma #1:18: 96px, Black 900) */}
         <AnimatedSection delayMs={100}>
@@ -118,7 +118,7 @@ export const Hero: React.FC = () => {
 
         {/* Hero App Showcase Frame (Figma #1:34: 1184x638px) with Interactive 3D Perspective */}
         <AnimatedSection delayMs={500} className="w-full max-w-[1184px] relative z-0">
-          <div className="mt-10 sm:mt-20 relative group">
+          <div className="mt-8 sm:mt-12 relative group">
             {/* Interactive Inspector Hotspot Badges */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-4">
               <button

@@ -62,17 +62,10 @@ export const WorkflowSection: React.FC = () => {
   const [selectedStep, setSelectedStep] = useState<WorkflowStep | null>(null);
 
   return (
-    <section id="workflow" className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto">
-      {/* Eyebrow (Figma #1:56: 16px, Light 300, #00B894) */}
-      <AnimatedSection delayMs={100}>
-        <div className="font-['Inter'] font-light text-sm sm:text-[16px] text-[#00B894] tracking-wider uppercase mb-2 sm:mb-3">
-          WORKFLOW
-        </div>
-      </AnimatedSection>
-
+    <section id="workflow" className="py-10 sm:py-16 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto">
       {/* Headline (Figma #1:57: 48px, SemiBold 600) */}
-      <AnimatedSection delayMs={200}>
-        <h2 className="font-['Inter'] font-semibold text-2xl sm:text-4xl lg:text-[48px] text-black tracking-tight mb-8 sm:mb-14">
+      <AnimatedSection delayMs={100}>
+        <h2 className="font-['Inter'] font-semibold text-2xl sm:text-4xl lg:text-[48px] text-black tracking-tight mb-6 sm:mb-8">
           Four steps.{' '}
           <span className="text-[#00B894] italic font-semibold">
             One loop

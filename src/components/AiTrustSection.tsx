@@ -8,17 +8,11 @@ export const AiTrustSection: React.FC = () => {
   const { ref: meterRef, inView: meterInView } = useInView({ threshold: 0.3 });
 
   return (
-    <section id="ai-trust" className="w-full bg-[#D9D9D9]/20 py-16 sm:py-24 border-y border-[#D9D9D9]/50 overflow-hidden">
+    <section id="ai-trust" className="w-full bg-[#D9D9D9]/20 py-10 sm:py-16 border-y border-[#D9D9D9]/50 overflow-hidden">
       <div className="max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-16">
         {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-16">
+        <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8">
           <AnimatedSection delayMs={100}>
-            <div className="font-['Inter'] font-light text-sm sm:text-[16px] text-[#00B894] tracking-wider uppercase mb-3 sm:mb-4">
-              AI TRUST
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection delayMs={200}>
             <h2 className="font-['Inter'] font-semibold text-2xl sm:text-4xl lg:text-[48px] text-black tracking-tight leading-tight">
               Can you{' '}
               <span className="text-[#00B894] italic font-semibold">

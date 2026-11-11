@@ -70,7 +70,7 @@ export const StatsRibbon: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="w-full bg-[#D9D9D9]/20 py-12 sm:py-16 lg:py-0 lg:h-[360px] flex items-center border-y border-[#D9D9D9]/40 relative overflow-hidden"
+      className="w-full bg-[#D9D9D9]/20 py-8 sm:py-10 lg:py-0 lg:h-[220px] flex items-center border-y border-[#D9D9D9]/40 relative overflow-hidden"
     >
       <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-8">

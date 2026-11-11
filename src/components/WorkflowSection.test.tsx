@@ -27,8 +27,9 @@ describe('WorkflowSection', () => {
     vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
   });
 
-  it('renders all four workflow steps from Figma', () => {
+  it('renders all four workflow steps from Figma without eyebrow', () => {
     render(<WorkflowSection />);
+    expect(screen.queryByText('WORKFLOW')).not.toBeInTheDocument();
     expect(screen.getByText('01')).toBeInTheDocument();
     expect(screen.getByText('Capture')).toBeInTheDocument();
     expect(screen.getByText('02')).toBeInTheDocument();

@@ -101,17 +101,11 @@ export const FeaturesSection: React.FC = () => {
   const currentFeature = FEATURES.find((f) => f.id === activeTab) || FEATURES[0];
 
   return (
-    <section id="features" className="py-20 sm:py-28 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto border-t border-[#D9D9D9]/40">
-      {/* Section Eyebrow & Title */}
-      <div className="text-center max-w-4xl mx-auto mb-12 sm:mb-16">
+    <section id="features" className="py-10 sm:py-16 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto border-t border-[#D9D9D9]/40">
+      {/* Section Title */}
+      <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8">
         <AnimatedSection delayMs={100}>
-          <div className="font-['Inter'] font-light text-sm sm:text-[16px] text-[#00B894] tracking-wider uppercase mb-3">
-            CORE CAPABILITIES
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection delayMs={200}>
-          <h2 className="font-['Inter'] font-semibold text-3xl sm:text-5xl lg:text-[54px] text-black tracking-tight leading-tight mb-4">
+          <h2 className="font-['Inter'] font-semibold text-3xl sm:text-5xl lg:text-[54px] text-black tracking-tight leading-tight mb-3">
             Everything you need to{' '}
             <span className="text-[#00B894] italic font-semibold">
               prove the fix
@@ -119,7 +113,7 @@ export const FeaturesSection: React.FC = () => {
           </h2>
         </AnimatedSection>
 
-        <AnimatedSection delayMs={300}>
+        <AnimatedSection delayMs={200}>
           <p className="font-['Inter'] font-light text-base sm:text-xl text-black/80 leading-relaxed px-2">
             A complete API debugging laboratory running locally on loopback. Transparent TLS proxying,
             traceable AI diagnostics, and deterministic scenario assertions.
@@ -128,8 +122,8 @@ export const FeaturesSection: React.FC = () => {
       </div>
 
       {/* Interactive Feature Tabs */}
-      <AnimatedSection delayMs={350}>
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 sm:mb-14">
+      <AnimatedSection delayMs={250}>
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
           {FEATURES.map((feature) => {
             const isActive = feature.id === activeTab;
             return (

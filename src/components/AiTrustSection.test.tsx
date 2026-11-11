@@ -26,8 +26,9 @@ describe('AiTrustSection', () => {
     vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
   });
 
-  it('renders FACT and HYPOTHESIS cards', () => {
+  it('renders FACT and HYPOTHESIS cards without eyebrow', () => {
     render(<AiTrustSection />);
+    expect(screen.queryByText('AI TRUST')).not.toBeInTheDocument();
     expect(screen.getByText(/FACT · DETERMINISTIC/i)).toBeInTheDocument();
     expect(screen.getByText(/Token expired at 12:04:30/i)).toBeInTheDocument();
     expect(screen.getByText(/HYPOTHESIS · UNVERIFIED/i)).toBeInTheDocument();

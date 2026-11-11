@@ -21,10 +21,10 @@ describe('FeaturesSection Component', () => {
     vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
   });
 
-  it('renders section title and all four capability tabs', () => {
+  it('renders section title and all four capability tabs without eyebrow', () => {
     render(<FeaturesSection />);
 
-    expect(screen.getByText('CORE CAPABILITIES')).toBeInTheDocument();
+    expect(screen.queryByText('CORE CAPABILITIES')).not.toBeInTheDocument();
     expect(screen.getByText(/Everything you need to/i)).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: /01 Traffic Capture/i })).toBeInTheDocument();

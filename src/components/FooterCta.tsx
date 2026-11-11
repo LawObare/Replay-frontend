@@ -6,7 +6,7 @@ export const FooterCta: React.FC = () => {
   };
 
   return (
-    <footer className="w-full py-10 sm:py-14 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto border-t border-[#D9D9D9]/60">
+    <footer className="w-full py-8 sm:py-10 px-4 sm:px-8 lg:px-16 max-w-[1920px] mx-auto border-t border-[#D9D9D9]/60">
       <div className="max-w-[1508px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
         {/* Brand & Copyright */}
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 text-center sm:text-left">

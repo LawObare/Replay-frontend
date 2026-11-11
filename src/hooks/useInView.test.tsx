@@ -5,8 +5,8 @@ import { useInView } from './useInView';
 
 describe('useInView', () => {
   let intersectionCallback: IntersectionObserverCallback;
-  let observeMock: ReturnType<typeof vi.fn>;
-  let unobserveMock: ReturnType<typeof vi.fn>;
+  let observeMock: ReturnType<typeof vi.fn<(target?: Element) => void>>;
+  let unobserveMock: ReturnType<typeof vi.fn<(target?: Element) => void>>;
 
   const TestComponent: React.FC = () => {
     const { ref, inView } = useInView();
