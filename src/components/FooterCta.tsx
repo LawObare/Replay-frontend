@@ -66,7 +66,7 @@ export const FooterCta: React.FC = () => {
             GitHub
           </a>
           <a
-            href="https://github.com/Flying-Tea-Squad/ReplayLabb/releases"
+            href="https://github.com/Dixon-O/replaylabb/releases"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-[#00B894] transition-colors"
