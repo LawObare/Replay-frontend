@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ALL_PACKAGES, PlatformOS } from '../lib/osDetector';
+import { ALL_PACKAGES, PlatformOS, RELEASE_INFO } from '../lib/osDetector';
 
 interface PlatformModalProps {
   isOpen: boolean;
@@ -55,7 +55,7 @@ export const PlatformModal: React.FC<PlatformModalProps> = ({
               Download ReplayLabb
             </h3>
             <p className="text-xs sm:text-sm font-light text-black/70 mt-1">
-              Select your platform installer. All packages are signed and local-first.
+              Select your platform installer ({RELEASE_INFO.releaseTag}). Local-first desktop builds.
             </p>
           </div>
           <button
@@ -151,8 +151,16 @@ export const PlatformModal: React.FC<PlatformModalProps> = ({
           </svg>
           <div>
             <span className="font-semibold text-black">Verifiable Integrity:</span>{' '}
-            Binaries are built with deterministic Rust toolchains. SHA256 checksums are
-            published alongside every GitHub release.
+            Verify every download against the published{' '}
+            <a
+              href={RELEASE_INFO.checksumsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-black underline underline-offset-2 hover:text-[#00B894] transition-colors"
+            >
+              SHA256SUMS
+            </a>{' '}
+            checksums. macOS, Windows ARM64, and Linux ARM64 installers are pending.
           </div>
         </div>
       </div>
