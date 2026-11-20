@@ -27,7 +27,7 @@ describe('DownloadButton', () => {
     expect(allPlatformsLink).toBeInTheDocument();
     expect(allPlatformsLink.closest('a')).toHaveAttribute(
       'href',
-      'https://github.com/Flying-Tea-Squad/ReplayLabb/releases'
+      'https://github.com/Dixon-O/replaylabb/releases'
     );
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
