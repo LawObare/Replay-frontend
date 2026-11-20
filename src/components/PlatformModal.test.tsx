@@ -15,8 +15,10 @@ describe('PlatformModal', () => {
     render(<PlatformModal isOpen={true} onClose={handleClose} detectedOs="linux" />);
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(screen.getByText(/Download ReplayLabb/i)).toBeInTheDocument();
-    expect(screen.getByText(/Debian \/ Ubuntu Package/i)).toBeInTheDocument();
-    expect(screen.getByText(/Universal Linux AppImage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ubuntu \/ Debian Package/i)).toBeInTheDocument();
+    expect(screen.getByText(/Windows Setup Installer/i)).toBeInTheDocument();
+    expect(screen.getByText(/Windows MSI Installer/i)).toBeInTheDocument();
+    expect(screen.getByText(/Windows Standalone Executable/i)).toBeInTheDocument();
   });
 
   it('closes on Escape key press (14Emanuel Gate)', () => {
