@@ -1,4 +1,36 @@
 export type PlatformOS = 'linux' | 'windows' | 'macos';
+export type PlatformArch = 'x64' | 'arm64';
+
+export const RELEASE_INFO = {
+  repoUrl: 'https://github.com/Dixon-O/replaylabb',
+  releasesUrl: 'https://github.com/Dixon-O/replaylabb/releases',
+  releaseTag: 'v0.1.0-test.1',
+  releaseName: 'ReplayLabb 0.1.0 Test 1',
+  releasePageUrl: 'https://github.com/Dixon-O/replaylabb/releases/tag/v0.1.0-test.1',
+  checksumsUrl:
+    'https://github.com/Dixon-O/replaylabb/releases/download/v0.1.0-test.1/SHA256SUMS',
+} as const;
+
+const DOWNLOAD_BASE = `${RELEASE_INFO.releasesUrl}/download/${RELEASE_INFO.releaseTag}`;
+
+export interface DownloadVariant {
+  id: string;
+  label: string;
+  filename: string;
+  format: string;
+  size: string;
+  url: string;
+  note?: string;
+}
+
+export interface ArchDownloadConfig {
+  available: boolean;
+  primary?: DownloadVariant;
+  alternatives?: DownloadVariant[];
+  installNote?: string;
+  installCommand?: string;
+  pendingNote?: string;
+}
 
 export interface PlatformInfo {
   os: PlatformOS;
@@ -8,12 +40,18 @@ export interface PlatformInfo {
   size: string;
   downloadUrl: string;
   releaseTag: string;
+  available: boolean;
 }
 
 export function detectUserPlatform(): PlatformOS {
   if (typeof window === 'undefined') return 'linux';
   const ua = (window.navigator.userAgent || '').toLowerCase();
-  const platform = ((window.navigator as unknown as { userAgentData?: { platform?: string } }).userAgentData?.platform || window.navigator.platform || '').toLowerCase();
+  const platform = (
+    (window.navigator as unknown as { userAgentData?: { platform?: string } })
+      .userAgentData?.platform ||
+    window.navigator.platform ||
+    ''
+  ).toLowerCase();
 
   if (platform.includes('win') || ua.includes('windows')) {
     return 'windows';
@@ -24,75 +62,149 @@ export function detectUserPlatform(): PlatformOS {
   return 'linux';
 }
 
+export const DOWNLOAD_CATALOG: Record<PlatformOS, Record<PlatformArch, ArchDownloadConfig>> = {
+  windows: {
+    x64: {
+      available: true,
+      primary: {
+        id: 'windows-x64-setup',
+        label: 'Download Setup (.exe)',
+        filename: 'ReplayLabb-0.1.0-508e7be-windows-x64-setup.exe',
+        format: 'Setup .exe (x64)',
+        size: '8.0 MB',
+        url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-508e7be-windows-x64-setup.exe`,
+      },
+      alternatives: [
+        {
+          id: 'windows-x64-msi',
+          label: 'MSI Installer',
+          filename: 'ReplayLabb-0.1.0-508e7be-windows-x64.msi',
+          format: '.msi',
+          size: '11.7 MB',
+          url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-508e7be-windows-x64.msi`,
+        },
+        {
+          id: 'windows-x64-standalone',
+          label: 'Standalone EXE',
+          filename: 'ReplayLabb-0.1.0-508e7be-windows-x64.exe',
+          format: 'Standalone .exe',
+          size: '31.8 MB',
+          url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-508e7be-windows-x64.exe`,
+          note: 'Requires WebView2',
+        },
+      ],
+      installNote:
+        'Windows test builds are unsigned, so Windows may show an unknown-publisher warning. The standalone EXE skips the installer and requires WebView2.',
+    },
+    arm64: {
+      available: false,
+      pendingNote: 'Windows ARM64 installer is pending.',
+    },
+  },
+  linux: {
+    x64: {
+      available: true,
+      primary: {
+        id: 'linux-x64-deb',
+        label: 'Download (.deb)',
+        filename: 'ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
+        format: '.deb (x64)',
+        size: '16.5 MB',
+        url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-bb5269b-linux-x64.deb`,
+      },
+      installNote:
+        'Install via APT from your download folder so GTK 3 and WebKitGTK 4.1 dependencies are resolved automatically:',
+      installCommand: 'sudo apt install ./ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
+    },
+    arm64: {
+      available: false,
+      pendingNote: 'Linux ARM64 installer is pending.',
+    },
+  },
+  macos: {
+    x64: {
+      available: false,
+      pendingNote: 'macOS (Intel) installer is pending.',
+    },
+    arm64: {
+      available: false,
+      pendingNote: 'macOS (Apple Silicon) installer is pending.',
+    },
+  },
+};
+
 export const PLATFORMS: Record<PlatformOS, PlatformInfo> = {
   linux: {
     os: 'linux',
-    label: 'Linux (Ubuntu / Debian)',
-    installerName: 'replaylabb_0.1.0_amd64.deb',
-    format: '.deb (x86_64)',
-    size: '11 MB',
-    downloadUrl: '/downloads/replaylabb_0.1.0_amd64.deb',
-    releaseTag: 'v0.1.0',
+    label: 'Linux (Ubuntu 24.04 x64)',
+    installerName: 'ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
+    format: '.deb (x64)',
+    size: '16.5 MB',
+    downloadUrl: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-bb5269b-linux-x64.deb`,
+    releaseTag: RELEASE_INFO.releaseTag,
+    available: true,
   },
   windows: {
     os: 'windows',
     label: 'Windows (64-bit)',
-    installerName: 'replaylabb_0.1.0_x64-setup.exe',
-    format: '.exe (x64)',
-    size: '14 MB',
-    downloadUrl: 'https://github.com/Flying-Tea-Squad/ReplayLabb/releases/latest',
-    releaseTag: 'v0.1.0',
+    installerName: 'ReplayLabb-0.1.0-508e7be-windows-x64-setup.exe',
+    format: 'Setup .exe (x64)',
+    size: '8.0 MB',
+    downloadUrl: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-508e7be-windows-x64-setup.exe`,
+    releaseTag: RELEASE_INFO.releaseTag,
+    available: true,
   },
   macos: {
     os: 'macos',
     label: 'macOS (Apple Silicon & Intel)',
-    installerName: 'ReplayLabb_0.1.0_universal.dmg',
-    format: '.dmg (universal)',
-    size: '16 MB',
-    downloadUrl: 'https://github.com/Flying-Tea-Squad/ReplayLabb/releases/latest',
-    releaseTag: 'v0.1.0',
+    installerName: 'Coming soon',
+    format: 'macOS (Pending)',
+    size: 'Pending',
+    downloadUrl: RELEASE_INFO.releasesUrl,
+    releaseTag: RELEASE_INFO.releaseTag,
+    available: false,
   },
 };
 
 export const ALL_PACKAGES = [
   {
-    os: 'linux',
-    name: 'Debian / Ubuntu Package',
-    filename: 'replaylabb_0.1.0_amd64.deb',
+    os: 'linux' as PlatformOS,
+    name: 'Ubuntu / Debian Package',
+    filename: 'ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
     format: '.deb',
-    size: '11 MB',
-    arch: 'x86_64',
-    url: '/downloads/replaylabb_0.1.0_amd64.deb',
+    size: '16.5 MB',
+    arch: 'x64',
+    url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-bb5269b-linux-x64.deb`,
     recommended: true,
   },
   {
-    os: 'linux',
-    name: 'Universal Linux AppImage',
-    filename: 'ReplayLabb_0.1.0_amd64.AppImage',
-    format: '.AppImage',
-    size: '18 MB',
-    arch: 'x86_64',
-    url: 'https://github.com/Flying-Tea-Squad/ReplayLabb/releases/latest',
+    os: 'windows' as PlatformOS,
+    name: 'Windows Setup Installer',
+    filename: 'ReplayLabb-0.1.0-508e7be-windows-x64-setup.exe',
+    format: '.exe',
+    size: '8.0 MB',
+    arch: 'x64',
+    url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-508e7be-windows-x64-setup.exe`,
+    recommended: true,
+  },
+  {
+    os: 'windows' as PlatformOS,
+    name: 'Windows MSI Installer',
+    filename: 'ReplayLabb-0.1.0-508e7be-windows-x64.msi',
+    format: '.msi',
+    size: '11.7 MB',
+    arch: 'x64',
+    url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-508e7be-windows-x64.msi`,
     recommended: false,
   },
   {
-    os: 'windows',
-    name: 'Windows NSIS Installer',
-    filename: 'replaylabb_0.1.0_x64-setup.exe',
+    os: 'windows' as PlatformOS,
+    name: 'Windows Standalone Executable',
+    filename: 'ReplayLabb-0.1.0-508e7be-windows-x64.exe',
     format: '.exe',
-    size: '14 MB',
-    arch: 'x64',
-    url: 'https://github.com/Flying-Tea-Squad/ReplayLabb/releases/latest',
-    recommended: true,
-  },
-  {
-    os: 'macos',
-    name: 'macOS Universal Disk Image',
-    filename: 'ReplayLabb_0.1.0_universal.dmg',
-    format: '.dmg',
-    size: '16 MB',
-    arch: 'Apple Silicon + Intel',
-    url: 'https://github.com/Flying-Tea-Squad/ReplayLabb/releases/latest',
-    recommended: true,
+    size: '31.8 MB',
+    arch: 'x64 (WebView2)',
+    url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-508e7be-windows-x64.exe`,
+    recommended: false,
   },
 ];
