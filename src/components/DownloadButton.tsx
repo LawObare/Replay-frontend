@@ -1,5 +1,5 @@
 import React from 'react';
-import { detectUserPlatform, PLATFORMS } from '../lib/osDetector';
+import { detectUserPlatform, PLATFORMS, RELEASE_INFO } from '../lib/osDetector';
 
 interface DownloadButtonProps {
   className?: string;
@@ -17,9 +17,13 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
     <div className="flex flex-col items-center w-full sm:w-auto">
       {/* Direct One-Click Download Button */}
       <a
-        href={currentPlatform.downloadUrl}
-        download={detectedOs === 'linux' ? currentPlatform.installerName : undefined}
-        title={`Download ${currentPlatform.installerName} (${currentPlatform.size})`}
+        href={currentPlatform.available ? currentPlatform.downloadUrl : '#download'}
+        rel={currentPlatform.available ? 'noopener noreferrer' : undefined}
+        title={
+          currentPlatform.available
+            ? `Download ${currentPlatform.installerName} (${currentPlatform.size})`
+            : `View available downloads (${currentPlatform.format})`
+        }
         className={`inline-flex items-center justify-center w-full sm:w-[374px] h-[64px] sm:h-[80px] bg-black text-white hover:text-[#00B894] hover:bg-black/90 active:scale-[0.99] rounded-full transition-all shadow-lg hover:shadow-xl cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894] ${className}`}
       >
         <span className="font-['Inter'] font-bold text-[18px] sm:text-[24px] tracking-tight">
@@ -31,16 +35,24 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
       {showOtherPlatformsLink && (
         <div className="mt-2.5 flex flex-wrap justify-center text-center items-center gap-1.5 sm:gap-2 text-xs font-light text-black/60 px-2 w-full max-w-[374px]">
           <span>
-            Default: <strong className="font-medium text-black">{currentPlatform.format}</strong> ({currentPlatform.size})
+            {currentPlatform.available ? (
+              <>
+                Default: <strong className="font-medium text-black">{currentPlatform.format}</strong> ({currentPlatform.size})
+              </>
+            ) : (
+              <>
+                <strong className="font-medium text-black">{currentPlatform.format}</strong>
+              </>
+            )}
           </span>
           <span className="hidden sm:inline">·</span>
           <a
-            href="https://github.com/Flying-Tea-Squad/ReplayLabb/releases"
+            href={RELEASE_INFO.releasesUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-black underline underline-offset-2 hover:text-[#00B894] transition-colors"
           >
-            All platforms (.AppImage, .dmg, .exe)
+            All platforms (.exe, .msi, .deb)
           </a>
         </div>
       )}
