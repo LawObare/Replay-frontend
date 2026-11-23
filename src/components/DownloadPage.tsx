@@ -112,7 +112,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                 </p>
                 {config.installCommand && (
                   <div className="space-y-2.5">
-                    <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                    <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
                       <code className="block max-w-full w-fit px-3.5 py-2 rounded-lg bg-[#121317]/[0.04] border border-[#212226]/10 font-mono text-xs sm:text-[13px] text-[#121317] overflow-x-auto">
                         {config.installCommand}
                       </code>
@@ -126,10 +126,10 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                           aria-controls={infoCardId}
                           aria-label={config.installCommandInfo.title}
                           title={config.installCommandInfo.title}
-                          className={`inline-flex items-center justify-center w-7 h-7 rounded-full border transition-all duration-200 shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894] ${
+                          className={`inline-flex items-center justify-center w-8 h-8 rounded-full border transition-all duration-200 shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894] focus-visible:ring-offset-2 ${
                             isInfoOpen
-                              ? 'bg-[#121317] text-white border-[#121317]'
-                              : 'bg-white text-[#45474D] border-[#212226]/20 hover:border-[#121317]/50 hover:text-[#121317] hover:bg-[#121317]/5'
+                              ? 'bg-[#121317] text-[#00B894] border-[#121317] ring-2 ring-[#00B894]/35 shadow-sm scale-105'
+                              : 'bg-[#00B894]/10 text-[#008A6E] border-[#00B894]/35 shadow-xs hover:bg-[#00B894] hover:text-white hover:border-[#00B894] hover:scale-105 hover:shadow-sm active:scale-95'
                           }`}
                         >
                           <svg
@@ -137,13 +137,14 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth={2.2}
+                            strokeWidth={2.1}
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             aria-hidden="true"
                           >
-                            <circle cx="12" cy="7.5" r="1.2" fill="currentColor" stroke="none" />
-                            <path d="M12 11.2v5.8" />
+                            <circle cx="12" cy="6.75" r="1.5" fill="currentColor" stroke="none" />
+                            <path d="M10.25 11.25h1.75v6.25" />
+                            <path d="M9.75 17.5h4.5" />
                           </svg>
                         </button>
                       )}
