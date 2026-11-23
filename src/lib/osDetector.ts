@@ -23,12 +23,20 @@ export interface DownloadVariant {
   note?: string;
 }
 
+export interface InstallCommandInfo {
+  title: string;
+  summary: string;
+  reasons: string[];
+  guiAlternative?: string;
+}
+
 export interface ArchDownloadConfig {
   available: boolean;
   primary?: DownloadVariant;
   alternatives?: DownloadVariant[];
   installNote?: string;
   installCommand?: string;
+  installCommandInfo?: InstallCommandInfo;
   pendingNote?: string;
 }
 
@@ -115,6 +123,18 @@ export const DOWNLOAD_CATALOG: Record<PlatformOS, Record<PlatformArch, ArchDownl
       installNote:
         'Install via APT from your download folder so GTK 3 and WebKitGTK 4.1 dependencies are resolved automatically:',
       installCommand: 'sudo apt install ./ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
+      installCommandInfo: {
+        title: 'Why use the terminal command?',
+        summary:
+          'Installing via APT from your Downloads folder is the most reliable way to install the .deb package on Ubuntu and Debian:',
+        reasons: [
+          'Ubuntu 24.04 opens .deb files in Archive Manager by default when double-clicked instead of installing them.',
+          'APT automatically resolves and installs required dependencies (GTK 3 and WebKitGTK 4.1), whereas dpkg -i fails if dependencies are missing.',
+          'GUI app store support for local .deb files varies across Ubuntu versions, while APT works consistently.',
+        ],
+        guiAlternative:
+          'Prefer installing by clicking? Right-click the .deb in Files → Open With → App Center (or install GDebi). Note: APT may print a harmless "_apt Permission denied" notice when installing from ~/Downloads—the install still completes normally.',
+      },
     },
     arm64: {
       available: false,
