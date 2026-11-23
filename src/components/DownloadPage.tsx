@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ArchDownloadConfig,
   detectUserPlatform,
@@ -20,6 +20,20 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
       : 'linux';
 
   const [activeOS, setActiveOS] = useState<SelectedOS>(initialOS);
+  const [openInfoKey, setOpenInfoKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (openInfoKey === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpenInfoKey(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [openInfoKey]);
 
   const osTabs: { id: SelectedOS; label: string; icon: string; width: number; height: number }[] = [
     { id: 'macos', label: 'macOS', icon: '/icons/icon-macos.svg', width: 16, height: 20 },
@@ -42,8 +56,19 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
   const x64Config = DOWNLOAD_CATALOG[activeOS].x64;
   const arm64Config = DOWNLOAD_CATALOG[activeOS].arm64;
 
-  const renderArchSection = (title: string, config: ArchDownloadConfig, extraPadding = false) => (
-    <div className={`space-y-6 ${extraPadding ? 'pt-4' : ''}`}>
+  const renderArchSection = (
+    archKey: 'x64' | 'arm64',
+    title: string,
+    config: ArchDownloadConfig,
+    extraPadding = false
+  ) => {
+    const infoKey = `${activeOS}-${archKey}`;
+    const isInfoOpen = openInfoKey === infoKey;
+    const infoCardId = `install-info-${infoKey}`;
+    const infoTitleId = `install-info-title-${infoKey}`;
+
+    return (
+      <div className={`space-y-6 ${extraPadding ? 'pt-4' : ''}`}>
       <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-medium leading-[34px] tracking-[-0.0047em] text-[#121317]">
         {title}
       </h2>
@@ -86,9 +111,106 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                   {config.installNote}
                 </p>
                 {config.installCommand && (
-                  <code className="block w-full sm:w-fit px-3.5 py-2 rounded-lg bg-[#121317]/[0.04] border border-[#212226]/10 font-mono text-xs sm:text-[13px] text-[#121317] overflow-x-auto">
-                    {config.installCommand}
-                  </code>
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                      <code className="block max-w-full w-fit px-3.5 py-2 rounded-lg bg-[#121317]/[0.04] border border-[#212226]/10 font-mono text-xs sm:text-[13px] text-[#121317] overflow-x-auto">
+                        {config.installCommand}
+                      </code>
+                      {config.installCommandInfo && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setOpenInfoKey((prev) => (prev === infoKey ? null : infoKey))
+                          }
+                          aria-expanded={isInfoOpen}
+                          aria-controls={infoCardId}
+                          aria-label={config.installCommandInfo.title}
+                          title={config.installCommandInfo.title}
+                          className={`inline-flex items-center justify-center w-7 h-7 rounded-full border transition-all duration-200 shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894] ${
+                            isInfoOpen
+                              ? 'bg-[#121317] text-white border-[#121317]'
+                              : 'bg-white text-[#45474D] border-[#212226]/20 hover:border-[#121317]/50 hover:text-[#121317] hover:bg-[#121317]/5'
+                          }`}
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2.2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <circle cx="12" cy="7.5" r="1.2" fill="currentColor" stroke="none" />
+                            <path d="M12 11.2v5.8" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+
+                    {config.installCommandInfo && isInfoOpen && (
+                      <div
+                        id={infoCardId}
+                        role="region"
+                        aria-labelledby={infoTitleId}
+                        className="mt-2.5 p-4 sm:p-5 rounded-2xl bg-white border border-[#212226]/15 shadow-lg max-w-2xl space-y-3"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="w-2 h-2 rounded-full bg-[#00B894] shrink-0"
+                              aria-hidden="true"
+                            />
+                            <h3 id={infoTitleId} className="text-sm font-semibold text-[#121317]">
+                              {config.installCommandInfo.title}
+                            </h3>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setOpenInfoKey(null)}
+                            aria-label="Close install command explanation"
+                            className="p-1 rounded-full text-[#45474D] hover:text-[#121317] hover:bg-[#121317]/5 transition-colors cursor-pointer shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894]"
+                          >
+                            <svg
+                              className="w-4 h-4"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <path d="M18 6L6 18M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <p className="text-[13px] text-[#45474D] leading-relaxed">
+                          {config.installCommandInfo.summary}
+                        </p>
+
+                        <ul className="space-y-1.5 text-[13px] text-[#45474D] leading-relaxed">
+                          {config.installCommandInfo.reasons.map((reason) => (
+                            <li key={reason} className="flex items-start gap-2.5">
+                              <span
+                                className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#00B894] shrink-0"
+                                aria-hidden="true"
+                              />
+                              <span>{reason}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {config.installCommandInfo.guiAlternative && (
+                          <p className="p-3 rounded-xl bg-[#121317]/[0.03] border border-[#212226]/10 text-xs text-[#45474D] leading-relaxed">
+                            {config.installCommandInfo.guiAlternative}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             )}
@@ -127,7 +249,8 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
   return (
     <div className="w-full min-h-screen bg-white text-[#121317] font-['Inter',sans-serif]">
@@ -152,7 +275,10 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                   role="tab"
                   aria-selected={isActive}
                   aria-controls={`panel-${tab.id}`}
-                  onClick={() => setActiveOS(tab.id)}
+                  onClick={() => {
+                    setActiveOS(tab.id);
+                    setOpenInfoKey(null);
+                  }}
                   className={`inline-flex items-center gap-2.5 px-5 py-2 h-[38px] rounded-full text-[15.2px] font-medium transition-all duration-200 cursor-pointer ${
                     isActive
                       ? 'bg-[#121317] text-white border border-[#121317] shadow-sm'
@@ -178,6 +304,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
         {/* Download Sections */}
         <div id={`panel-${activeOS}`} role="tabpanel" className="space-y-12">
           {renderArchSection(
+            'x64',
             activeOS === 'macos'
               ? 'Download for Intel (x64) processors'
               : 'Download for x64 processors',
@@ -185,6 +312,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
           )}
 
           {renderArchSection(
+            'arm64',
             activeOS === 'macos'
               ? 'Download for Apple Silicon (ARM64) processors'
               : 'Download for ARM64 processors',
