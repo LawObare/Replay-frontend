@@ -65,6 +65,52 @@ describe('DownloadPage Component', () => {
     expect(comingSoonBtn).toBeDisabled();
   });
 
+  it('toggles an explanation card from the info button next to the Linux install command', () => {
+    render(<DownloadPage />);
+    fireEvent.click(screen.getByRole('tab', { name: /Linux/i }));
+
+    const infoButton = screen.getByRole('button', { name: /Why use the terminal command\?/i });
+    expect(infoButton).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('region', { name: /Why use the terminal command\?/i })
+    ).not.toBeInTheDocument();
+
+    // Open explanation card
+    fireEvent.click(infoButton);
+    expect(infoButton).toHaveAttribute('aria-expanded', 'true');
+
+    const card = screen.getByRole('region', { name: /Why use the terminal command\?/i });
+    expect(card).toHaveTextContent(/Archive Manager/i);
+    expect(card).toHaveTextContent(/GTK 3 and WebKitGTK 4\.1/i);
+    expect(card).toHaveTextContent(/Open With → App Center/i);
+
+    // Close via card close button
+    fireEvent.click(screen.getByRole('button', { name: /Close install command explanation/i }));
+    expect(infoButton).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('region', { name: /Why use the terminal command\?/i })
+    ).not.toBeInTheDocument();
+
+    // Re-open and close via Escape key
+    fireEvent.click(infoButton);
+    expect(infoButton).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(infoButton).toHaveAttribute('aria-expanded', 'false');
+
+    // Re-open, switch to Windows tab, then switch back to Linux (should be reset to closed)
+    fireEvent.click(infoButton);
+    expect(infoButton).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.click(screen.getByRole('tab', { name: /Windows/i }));
+    expect(
+      screen.queryByRole('button', { name: /Why use the terminal command\?/i })
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: /Linux/i }));
+    expect(
+      screen.getByRole('button', { name: /Why use the terminal command\?/i })
+    ).toHaveAttribute('aria-expanded', 'false');
+  });
+
   it('links Windows x64 to Setup EXE, MSI, and Standalone EXE and marks Windows ARM64 as Coming Soon', () => {
     render(<DownloadPage />);
     fireEvent.click(screen.getByRole('tab', { name: /Windows/i }));
