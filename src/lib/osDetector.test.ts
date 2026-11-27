@@ -72,6 +72,12 @@ describe('osDetector', () => {
     expect(DOWNLOAD_CATALOG.windows.x64.alternatives).toHaveLength(2);
     expect(DOWNLOAD_CATALOG.windows.arm64.available).toBe(false);
     expect(DOWNLOAD_CATALOG.linux.x64.available).toBe(true);
+    expect(DOWNLOAD_CATALOG.linux.x64.installCommand).toContain('wget -O /tmp/replaylabb.deb');
+    expect(DOWNLOAD_CATALOG.linux.x64.installCommand).toContain(
+      DOWNLOAD_CATALOG.linux.x64.primary?.url
+    );
+    expect(DOWNLOAD_CATALOG.linux.x64.installCommand).toContain('sudo apt install -y /tmp/replaylabb.deb');
+    expect(DOWNLOAD_CATALOG.linux.x64.installCommand).toContain('rm -f /tmp/replaylabb.deb');
     expect(DOWNLOAD_CATALOG.linux.x64.installCommandInfo?.title).toBeTruthy();
     expect(DOWNLOAD_CATALOG.linux.x64.installCommandInfo?.summary).toBeTruthy();
     expect(DOWNLOAD_CATALOG.linux.x64.installCommandInfo?.reasons.length).toBeGreaterThanOrEqual(3);
