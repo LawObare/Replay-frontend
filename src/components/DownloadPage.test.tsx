@@ -1,9 +1,19 @@
 import React from 'react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { DownloadPage } from './DownloadPage';
+import { DOWNLOAD_CATALOG } from '../lib/osDetector';
 
 describe('DownloadPage Component', () => {
+  const originalClipboard = navigator.clipboard;
+
+  afterEach(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      value: originalClipboard,
+      configurable: true,
+    });
+    vi.restoreAllMocks();
+  });
   it('renders title and brand mark without previous releases button', () => {
     render(<DownloadPage />);
 
@@ -58,7 +68,9 @@ describe('DownloadPage Component', () => {
       'https://github.com/Dixon-O/replaylabb/releases/download/v0.1.0-test.1/ReplayLabb-0.1.0-bb5269b-linux-x64.deb'
     );
     expect(
-      screen.getByText(/sudo apt install \.\/ReplayLabb-0\.1\.0-bb5269b-linux-x64\.deb/i)
+      screen.getByText(
+        /wget -O \/tmp\/replaylabb\.deb https:\/\/github\.com\/Dixon-O\/replaylabb\/releases\/download\/v0\.1\.0-test\.1\/ReplayLabb-0\.1\.0-bb5269b-linux-x64\.deb && sudo apt install -y \/tmp\/replaylabb\.deb && rm -f \/tmp\/replaylabb\.deb/i
+      )
     ).toBeInTheDocument();
 
     const comingSoonBtn = screen.getByRole('button', { name: /Coming Soon/i });
@@ -109,6 +121,25 @@ describe('DownloadPage Component', () => {
     expect(
       screen.getByRole('button', { name: /Why use the terminal command\?/i })
     ).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('copies the Linux install command to the clipboard when Copy is clicked', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true,
+    });
+
+    render(<DownloadPage />);
+    fireEvent.click(screen.getByRole('tab', { name: /Linux/i }));
+
+    const copyButton = screen.getByRole('button', { name: /Copy install command/i });
+    fireEvent.click(copyButton);
+
+    expect(writeText).toHaveBeenCalledWith(DOWNLOAD_CATALOG.linux.x64.installCommand);
+    expect(
+      await screen.findByRole('button', { name: /Copied install command/i })
+    ).toBeInTheDocument();
   });
 
   it('links Windows x64 to Setup EXE, MSI, and Standalone EXE and marks Windows ARM64 as Coming Soon', () => {
