@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ArchDownloadConfig,
   detectUserPlatform,
@@ -21,6 +21,54 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
 
   const [activeOS, setActiveOS] = useState<SelectedOS>(initialOS);
   const [openInfoKey, setOpenInfoKey] = useState<string | null>(null);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const copyTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current !== null) {
+        window.clearTimeout(copyTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleCopyCommand = async (key: string, command: string) => {
+    let copied = false;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(command);
+        copied = true;
+      }
+    } catch {
+      copied = false;
+    }
+
+    if (!copied) {
+      const textarea = document.createElement('textarea');
+      textarea.value = command;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        copied = document.execCommand('copy');
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+
+    if (copied) {
+      setCopiedKey(key);
+      if (copyTimeoutRef.current !== null) {
+        window.clearTimeout(copyTimeoutRef.current);
+      }
+      copyTimeoutRef.current = window.setTimeout(() => {
+        setCopiedKey(null);
+        copyTimeoutRef.current = null;
+      }, 2000);
+    }
+  };
 
   useEffect(() => {
     if (openInfoKey === null) return;
@@ -64,6 +112,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
   ) => {
     const infoKey = `${activeOS}-${archKey}`;
     const isInfoOpen = openInfoKey === infoKey;
+    const isCopied = copiedKey === infoKey;
     const infoCardId = `install-info-${infoKey}`;
     const infoTitleId = `install-info-title-${infoKey}`;
 
@@ -112,10 +161,53 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                 </p>
                 {config.installCommand && (
                   <div className="space-y-2.5">
-                    <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
-                      <code className="block max-w-full w-fit px-3.5 py-2 rounded-lg bg-[#121317]/[0.04] border border-[#212226]/10 font-mono text-xs sm:text-[13px] text-[#121317] overflow-x-auto">
-                        {config.installCommand}
-                      </code>
+                    <div className="flex items-center gap-2 max-w-full">
+                      <div className="flex items-center gap-2 min-w-0 flex-1 rounded-xl bg-[#121317]/[0.04] border border-[#212226]/10 pl-3.5 pr-1.5 py-1.5">
+                        <code className="block min-w-0 flex-1 font-mono text-xs sm:text-[13px] text-[#121317] overflow-x-auto whitespace-nowrap py-1">
+                          {config.installCommand}
+                        </code>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyCommand(infoKey, config.installCommand!)}
+                          aria-label={isCopied ? 'Copied install command' : 'Copy install command'}
+                          title={isCopied ? 'Copied!' : 'Copy command'}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B894] ${
+                            isCopied
+                              ? 'bg-[#00B894] text-white border border-[#00B894] shadow-xs'
+                              : 'bg-white text-[#121317] border border-[#212226]/12 hover:bg-[#121317] hover:text-white hover:border-[#121317]'
+                          }`}
+                        >
+                          {isCopied ? (
+                            <svg
+                              className="w-3.5 h-3.5"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2.2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                          ) : (
+                            <svg
+                              className="w-3.5 h-3.5"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                          )}
+                          <span>{isCopied ? 'Copied' : 'Copy'}</span>
+                        </button>
+                      </div>
                       {config.installCommandInfo && (
                         <button
                           type="button"
@@ -279,6 +371,11 @@ export const DownloadPage: React.FC<DownloadPageProps> = () => {
                   onClick={() => {
                     setActiveOS(tab.id);
                     setOpenInfoKey(null);
+                    setCopiedKey(null);
+                    if (copyTimeoutRef.current !== null) {
+                      window.clearTimeout(copyTimeoutRef.current);
+                      copyTimeoutRef.current = null;
+                    }
                   }}
                   className={`inline-flex items-center gap-2.5 px-5 py-2 h-[38px] rounded-full text-[15.2px] font-medium transition-all duration-200 cursor-pointer ${
                     isActive
