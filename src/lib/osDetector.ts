@@ -12,6 +12,7 @@ export const RELEASE_INFO = {
 } as const;
 
 const DOWNLOAD_BASE = `${RELEASE_INFO.releasesUrl}/download/${RELEASE_INFO.releaseTag}`;
+const LINUX_X64_DEB_URL = `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-bb5269b-linux-x64.deb`;
 
 export interface DownloadVariant {
   id: string;
@@ -118,22 +119,23 @@ export const DOWNLOAD_CATALOG: Record<PlatformOS, Record<PlatformArch, ArchDownl
         filename: 'ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
         format: '.deb (x64)',
         size: '16.5 MB',
-        url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-bb5269b-linux-x64.deb`,
+        url: LINUX_X64_DEB_URL,
       },
       installNote:
-        'Install via APT from your download folder so GTK 3 and WebKitGTK 4.1 dependencies are resolved automatically:',
-      installCommand: 'sudo apt install ./ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
+        'Or download and install directly from any terminal folder via APT (resolves GTK 3 and WebKitGTK 4.1 dependencies automatically):',
+      installCommand: `wget -O /tmp/replaylabb.deb ${LINUX_X64_DEB_URL} && sudo apt install -y /tmp/replaylabb.deb && rm -f /tmp/replaylabb.deb`,
       installCommandInfo: {
         title: 'Why use the terminal command?',
         summary:
-          'Installing via APT from your Downloads folder is the most reliable way to install the .deb package on Ubuntu and Debian:',
+          'Downloading and installing via APT in one command is the most reliable way to install ReplayLabb on Ubuntu and Debian:',
         reasons: [
+          'Works from any terminal directory—no need to navigate to ~/Downloads or match a downloaded filename.',
           'Ubuntu 24.04 opens .deb files in Archive Manager by default when double-clicked instead of installing them.',
           'APT automatically resolves and installs required dependencies (GTK 3 and WebKitGTK 4.1), whereas dpkg -i fails if dependencies are missing.',
-          'GUI app store support for local .deb files varies across Ubuntu versions, while APT works consistently.',
+          'Installing from /tmp avoids the "_apt Permission denied" notice that can appear when installing from ~/Downloads.',
         ],
         guiAlternative:
-          'Prefer installing by clicking? Right-click the .deb in Files → Open With → App Center (or install GDebi). Note: APT may print a harmless "_apt Permission denied" notice when installing from ~/Downloads—the install still completes normally.',
+          'Prefer installing by clicking? Download the .deb above, then right-click it in Files → Open With → App Center (or install GDebi).',
       },
     },
     arm64: {
@@ -160,7 +162,7 @@ export const PLATFORMS: Record<PlatformOS, PlatformInfo> = {
     installerName: 'ReplayLabb-0.1.0-bb5269b-linux-x64.deb',
     format: '.deb (x64)',
     size: '16.5 MB',
-    downloadUrl: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-bb5269b-linux-x64.deb`,
+    downloadUrl: LINUX_X64_DEB_URL,
     releaseTag: RELEASE_INFO.releaseTag,
     available: true,
   },
@@ -194,7 +196,7 @@ export const ALL_PACKAGES = [
     format: '.deb',
     size: '16.5 MB',
     arch: 'x64',
-    url: `${DOWNLOAD_BASE}/ReplayLabb-0.1.0-bb5269b-linux-x64.deb`,
+    url: LINUX_X64_DEB_URL,
     recommended: true,
   },
   {
